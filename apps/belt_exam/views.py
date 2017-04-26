@@ -16,7 +16,7 @@ def quotes(request):
 def user_page(request, id):
     context = {
     "users" : User.objects.get(id = id),
-    "quotes" : Quote.objects.all()
+    "quotes" : Quote.objects.filter(user=User.objects.get(id = id))
     }
     return render(request, "belt_exam/user.html", context)
 

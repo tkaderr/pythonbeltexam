@@ -14,12 +14,11 @@
     <h1>Posts by {{users.first_name}}</h1>
     <a href="/quotes">Dashboard</a> | <a href="/logout">Logout</a>
     <hr>
-    <p>Counts: {{users.favorite_quotes.count}}</p>
+    <p>Counts: {{quotes.count}}</p>
     {% for quote in quotes %}
-      {% if users in quote.favorite.all%}
       <p><span>{{quote.quoter}}:</span> {{quote.content}}</p>
       <hr>
-      {% endif %}
+
     {% endfor %}
 
 
