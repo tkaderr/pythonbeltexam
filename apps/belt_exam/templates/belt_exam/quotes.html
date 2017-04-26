@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Message Wall</title>
+    <style media="screen">
+
+      .all_quotes{
+        width: 500px;
+        height: 500px;
+        display: inline-block;
+        overflow: scroll;
+      }
+      .favorite_quotes{
+        width: 300px;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 200px;
+        height: 300px;
+        overflow: scroll;
+      }
+      .add_quotes{
+        width: 100px;
+        display: inline-block;
+      }
+      .right{
+        width: 300px;
+        display:inline-block;
+      }
+    </style>
+  </head>
+  <body>
+
+  <div class="all_quotes">
+    <h2>Welcome, {{users.first_name}} </h2>
+    <a href="/logout">Log Off</a>
+    <hr>
+    <h1>Quotable Quotes:</h1>
+    {%  for quote in quotes %}
+    {% if users not in quote.favorite.all %}
+    <p>{{quote.quoter}}:{{quote.content}}</p>
+    <p>Posted by: <a href="/user/{{quote.user.id}}">{{quote.user.first_name}}</a></p>
+
+    {% if users not in quote.favorite.all %}
+    <button type="button" name="Add to My List"><a href="/favoritequote/{{quote.id}}">Add to My List</a></button>
+    {% endif %}
+    <hr>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+<div class="right">
+<div class="favorite_quotes">
+
+  <h1>Your Favorites:</h1>
+  {% for fav in quotes %}
+    {% if users in fav.favorite.all%}
+    <p>{{fav.quoter}}:{{fav.content}}</p>
+    <p>Posted by: <a href="/user/{{fav.user.id}}">{{fav.user.first_name}}</a></p>
+    <button type="button" name="Remove from my list"><a href="/removequote/{{fav.id}}">Remove From My List</a></button>
+    <hr>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<div class="add_quotes">
+<h6>Contribute a Quote:</h6>
+{% if messages %}
+{% for message in messages %}
+<p>
+  {{ message }}
+</p>
+{% endfor %}
+{% endif %}
+    <form class="addquote" action="/postquote" method="post">
+      {% csrf_token %}
+      Quoted By: <input type="text" name="quoter" value=""><br>
+      Message: <textarea name="content" rows="3" cols="80"></textarea>
+      <input type="submit" name="submit" value="Submit">
+    </form>
+</div>
+</div>
+  </body>
+</html>
